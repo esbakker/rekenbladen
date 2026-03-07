@@ -43,6 +43,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "index.html",
+                "input": "dist/rekenbladen/",
+                "output": "404.html"
               }
             ],
             "styles": [
