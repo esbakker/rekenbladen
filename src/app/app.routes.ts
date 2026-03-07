@@ -7,9 +7,6 @@ export const routes: Routes = [
     component: RekenbladComponent
   }, {
     path: '',
-    component: RekenbladComponent,
+    redirectTo: 'default',
     pathMatch: 'full'
-  }, {
-    path: '**',
-    redirectTo: ''
   }];

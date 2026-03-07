@@ -1,8 +1,6 @@
 import {effect, Injectable, signal} from '@angular/core';
 import {Config} from '../model/config';
 import {ActivatedRoute, Router} from '@angular/router';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {skip} from 'rxjs';
 
 export const DEFAULT_CONFIG: Config = {
   itemsPerGroup: 5,
@@ -18,21 +16,22 @@ export class ConfigService {
 
   constructor(private readonly router: Router, private readonly activatedRoute: ActivatedRoute) {
     effect(() => {
-      if (this.config()) {
+      const config = this.config();
+      if (config) {
         this.router.navigate([], {
             relativeTo: this.activatedRoute,
             replaceUrl: true,
-            queryParams: {config: btoa(JSON.stringify(this.config()))}
+          queryParams: {config: btoa(JSON.stringify(config))}
           }
         )
       }
     });
+  }
 
-    this.activatedRoute.queryParams.pipe(takeUntilDestroyed(), skip(1)).subscribe(params => {
-      const configParam = params['config'];
-      const newConfig: Config = configParam ? JSON.parse(atob(configParam)) : {...DEFAULT_CONFIG};
-      this.update(newConfig);
-    })
+  init(configParam?: string) {
+    const decodedConfigParam = configParam ? decodeURIComponent(configParam) : '';
+    const newConfig: Config = decodedConfigParam ? JSON.parse(atob(decodedConfigParam)) : {...DEFAULT_CONFIG};
+    this.update(newConfig);
   }
 
   update(updatedConfig: Partial<Config>) {

@@ -1,9 +1,9 @@
-import {Component, DestroyRef} from '@angular/core';
+import {Component, DestroyRef, effect, signal} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Entry} from '../shared/model/config';
+import {Config, Entry} from '../shared/model/config';
 import {SumOperator} from '../shared/model/sum';
 import {ConfigService} from '../shared/services/config.service';
-import {takeUntilDestroyed, toObservable} from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {UiStateService} from '../shared/services/ui-state.service';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatOption} from '@angular/material/core';
@@ -15,8 +15,8 @@ import {MatButton} from '@angular/material/button';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {GenerateSumService} from '../shared/services/generate-sum.service';
 import {Router} from '@angular/router';
-import {filter, first, skip} from 'rxjs';
 import {TimePipe} from '../shared/pipes/time-pipe';
+import {UiState} from '../shared/model/ui-state';
 
 @Component({
   selector: 'app-config',
@@ -37,8 +37,8 @@ import {TimePipe} from '../shared/pipes/time-pipe';
   styleUrl: './config.component.scss',
 })
 export class ConfigComponent {
-  configForm?: FormGroup;
-  stateForm?: FormGroup;
+  configForm = signal<FormGroup | undefined>(undefined);
+  stateForm = signal<FormGroup | undefined>(undefined);
 
   protected readonly faTrash = faTrash;
   protected readonly faPrint = faPrint;
@@ -47,24 +47,33 @@ export class ConfigComponent {
 
   constructor(private fb: FormBuilder, private readonly configService: ConfigService, protected readonly uiStateService: UiStateService,
               private readonly generateSumService: GenerateSumService, private readonly router: Router, private readonly destroyRef: DestroyRef) {
-    toObservable(this.configService.config).pipe(skip(1), filter(config => !!config), first()).subscribe(initialConfig => {
-      this.configForm = this.fb.group({
+    const effectRef = effect(() => {
+      const initialConfig = this.configService.config();
+      if (!initialConfig) {
+        return;
+      }
+      effectRef.destroy();
+      const configForm = this.fb.group({
         itemsPerGroup: [initialConfig.itemsPerGroup, [Validators.required, Validators.min(1)]],
         doubleSided: [initialConfig.doubleSided],
         entries: this.fb.array(initialConfig.entries.map(entry => this.createEntryGroup(entry))),
       });
+      this.configForm.set(configForm);
       const initialState = this.uiStateService.state();
-      this.stateForm = this.fb.group({
+      const stateForm = this.fb.group({
         showAnswers: [initialState.showAnswers],
         fillOutMinutes: [5]
       });
-      this.configForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(config => this.configService.update(config));
-      this.stateForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(config => this.uiStateService.update(config));
+      this.stateForm.set(stateForm);
+      configForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(config => this.configService.update(config as Partial<Config>));
+      stateForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(config => this.uiStateService.update(config as Partial<UiState>));
     });
   }
 
   get entries(): FormArray {
-    return this.configForm?.get('entries') as FormArray;
+    return this.configForm()?.get('entries') as FormArray;
   }
 
   addEntry(): void {
@@ -87,7 +96,8 @@ export class ConfigComponent {
   }
 
   regenerate() {
-    this.router.navigate([this.generateSumService.createSeed()], {queryParams: {config: btoa(JSON.stringify(this.configService.config()))}});
+    const value = this.generateSumService.createSeed();
+    this.generateSumService.seed.set(value);
   }
 
   copyUrl() {

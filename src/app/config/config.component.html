@@ -1,8 +1,10 @@
 @let isFillingOut = uiStateService.state().fillingOut;
 @let timeRemaining = uiStateService.remainingTime();
 @let finishedFillingOut = uiStateService.state().timeExpired;
+@let sForm = stateForm();
+@let cForm = configForm();
 
-@if (stateForm && configForm) {
+@if (sForm && cForm) {
   <div class="actions">
     @if (!isFillingOut) {
       <button matButton (click)="regenerate()">
@@ -26,7 +28,7 @@
 
   </div>
   @if (!isFillingOut) {
-    <form [formGroup]="configForm">
+    <form [formGroup]="cForm">
       <h3>Configuratie</h3>
       <mat-form-field>
         <mat-label>Sommen per blok</mat-label>
@@ -77,7 +79,7 @@
       <button matButton="filled" (click)="addEntry()">Voeg somgroep toe</button>
     </form>
 
-    <form [formGroup]="stateForm">
+    <form [formGroup]="sForm">
       <h3>Weergave instellingen</h3>
       <mat-checkbox formControlName="showAnswers">Toon antwoorden</mat-checkbox>
 
