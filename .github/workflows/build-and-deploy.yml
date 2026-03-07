@@ -35,7 +35,6 @@ jobs:
     - name: Build the Angular Application
       run:  |
         npm run build
-        cp dist/rekenbladen/browser/index.html dist/rekenbladen/browser/404.html
 
     - name: Setup Pages
       uses: actions/configure-pages@v5
