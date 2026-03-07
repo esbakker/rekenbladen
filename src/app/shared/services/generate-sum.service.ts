@@ -26,15 +26,19 @@ export class GenerateSumService {
   }
 
   private createSums(config: Config, random: PRNG) {
-    return config.entries.flatMap(entry =>
-      Array.from({length: entry.nrOfGroups}).map(() =>
+    return config.entries.flatMap(entry => {
+      if (entry.start >= entry.end) {
+        return [];
+      }
+
+      return Array.from({length: entry.nrOfGroups}).map(() =>
         Array.from({length: config.itemsPerGroup}).reduce((pv: Sum[]) => {
           const sum = this.createUniqueSum(random, entry, pv);
 
           return [...pv, sum];
         }, [] as Sum[])
       )
-    );
+    });
   }
 
   private createUniqueSum(random: PRNG, entry: Entry, sums: Sum[]) {
