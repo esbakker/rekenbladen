@@ -1,0 +1,15 @@
+@let sumGroups = generateSumService.sums();
+
+@for (group of sumGroups; track $index) {
+  <div class="group">
+    @for (sum of group; track $index) {
+      <div class="sum">
+        <span>{{ sum.first }}</span>
+        <span>{{ sum.operator }}</span>
+        <span>{{ sum.second }}</span>
+        <span>=</span>
+        <span>....</span>
+      </div>
+    }
+  </div>
+}
