@@ -1,11 +1,10 @@
-import {Component, signal} from '@angular/core';
-import {RekenbladComponent} from './rekenblad/rekenblad.component';
+import {Component} from '@angular/core';
 import {ConfigComponent} from './config/config.component';
 import {RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RekenbladComponent, ConfigComponent, RouterOutlet],
+  imports: [ConfigComponent, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
