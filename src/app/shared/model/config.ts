@@ -9,6 +9,7 @@ export interface Entry {
 }
 
 export interface Config {
-  itemsPersGroup: number;
+  itemsPerGroup: number;
   entries: Entry[];
+  doubleSided: boolean;
 }

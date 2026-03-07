@@ -1,0 +1,58 @@
+<div class="actions">
+  <fa-icon [icon]="faPrint" (click)="print()"></fa-icon>
+</div>
+<form [formGroup]="configForm">
+  <h3>Configuratie</h3>
+  <mat-form-field>
+    <mat-label>Sommen per blok</mat-label>
+    <input matInput type="number" formControlName="itemsPerGroup">
+  </mat-form-field>
+  <mat-checkbox formControlName="doubleSided">Dubbelzijdig (2 pagina's)</mat-checkbox>
+
+  <h3>Blok groepen</h3>
+  <div formArrayName="entries">
+    @for (entry of entries.controls; track $index; let i = $index) {
+      <div [formGroupName]="i">
+        <div class="entry-header">
+          <h4>Sommen {{ entry.value | entrySummary }}</h4>
+          <fa-icon [icon]="faTrash" (click)="removeEntry(i)"></fa-icon>
+        </div>
+
+        <div class="entry-config">
+          <mat-form-field>
+            <mat-label>
+              Som soort:
+            </mat-label>
+            <mat-select formControlName="operator">
+              <mat-option [value]="'+'">Plus (+)</mat-option>
+              <mat-option [value]="'-'">Min (-)</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Begin getal</mat-label>
+            <input matInput type="number" formControlName="start">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Eind getal</mat-label>
+            <input matInput type="number" formControlName="end">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Aantal blokker</mat-label>
+            <input matInput type="number" formControlName="nrOfGroups">
+          </mat-form-field>
+
+        </div>
+      </div>
+    }
+  </div>
+
+  <button matButton="filled" (click)="addEntry()">Voeg somgroep toe</button>
+</form>
+
+<h3>Weergave instellingen</h3>
+<form [formGroup]="stateForm">
+  <mat-checkbox formControlName="showAnswers">Toon antwoorden</mat-checkbox>
+</form>

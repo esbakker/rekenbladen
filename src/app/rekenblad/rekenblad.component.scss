@@ -3,6 +3,13 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 
+  .page-break {
+    column-span: all;
+    grid-column: span 4;
+    border-bottom: 1px dashed;
+    page-break-after: always;
+  }
+
   .group {
     border: 1px solid black;
     padding: 5px;

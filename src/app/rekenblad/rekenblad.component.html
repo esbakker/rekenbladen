@@ -1,6 +1,11 @@
 @let sumGroups = generateSumService.sums();
+@let config = configService.config();
+@let state = uiStateService.state();
 
-@for (group of sumGroups; track $index) {
+@for (group of sumGroups; track $index; let count = $count) {
+  @if (config.doubleSided && (count / 2) === $index) {
+    <div class="page-break"></div>
+  }
   <div class="group">
     @for (sum of group; track $index) {
       <div class="sum">
@@ -8,7 +13,11 @@
         <span>{{ sum.operator }}</span>
         <span>{{ sum.second }}</span>
         <span>=</span>
-        <span>....</span>
+        @if (state.showAnswers) {
+          <strong class="answer">{{ sum.answer }}</strong>
+        } @else {
+          <span>....</span>
+        }
       </div>
     }
   </div>
