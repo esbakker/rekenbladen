@@ -17,6 +17,7 @@ import {GenerateSumService} from '../shared/services/generate-sum.service';
 import {Router} from '@angular/router';
 import {TimePipe} from '../shared/pipes/time-pipe';
 import {UiState} from '../shared/model/ui-state';
+import {configToBase64} from '../shared/url.util';
 
 @Component({
   selector: 'app-config',
@@ -98,6 +99,7 @@ export class ConfigComponent {
   regenerate() {
     const value = this.generateSumService.createSeed();
     this.generateSumService.seed.set(value);
+    this.router.navigate(['/', value], {queryParams: {config: configToBase64(this.configService.config())}});
   }
 
   copyUrl() {
