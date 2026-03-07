@@ -54,7 +54,7 @@ export class GenerateSumService {
   }
 
   private sumInvalid(sum: Sum, entry: Entry) {
-    return sum.answer > entry.end || sum.answer < entry.start || !sum.first && !sum.second;
+    return sum.answer > entry.end || sum.answer < entry.start || !sum.first || !sum.second;
   }
 
   private createSum(random: PRNG, entry: Entry) {
@@ -76,6 +76,6 @@ export class GenerateSumService {
       end = entry.operator === '-' ? first : (entry.end - first);
       start = 1;
     }
-    return Math.round(random() * end) + start;
+    return Math.round(random() * (end - start)) + start;
   }
 }
