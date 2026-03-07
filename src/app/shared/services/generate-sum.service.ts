@@ -71,9 +71,11 @@ export class GenerateSumService {
 
   private generateNumber(random: PRNG, entry: Entry, first?: number) {
     let end = entry.end;
+    let start = entry.start;
     if (first !== undefined) {
       end = entry.operator === '-' ? first : (entry.end - first);
+      start = 1;
     }
-    return Math.round(random() * end);
+    return Math.round(random() * end) + start;
   }
 }
