@@ -1,5 +1,17 @@
+@if (stateForm && configForm) {
 <div class="actions">
-  <fa-icon [icon]="faPrint" (click)="print()"></fa-icon>
+  <button mat-button="filled" (click)="regenerate()">
+    <fa-icon [icon]="faArrowsRotate"></fa-icon>
+    Genereer nieuwe sommen
+  </button>
+  <button mat-button="filled" (click)="print()">
+    <fa-icon [icon]="faPrint"></fa-icon>
+    Print
+  </button>
+  <button mat-button="filled" (click)="copyUrl()">
+    <fa-icon [icon]="faCopy"></fa-icon>
+    Kopieer url voor deze sommen
+  </button>
 </div>
 <form [formGroup]="configForm">
   <h3>Configuratie</h3>
@@ -56,3 +68,4 @@
 <form [formGroup]="stateForm">
   <mat-checkbox formControlName="showAnswers">Toon antwoorden</mat-checkbox>
 </form>
+}

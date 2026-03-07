@@ -1,9 +1,10 @@
-import {computed, Injectable} from '@angular/core';
+import {computed, effect, Injectable, signal} from '@angular/core';
 import {ConfigService} from './config.service';
 import {Sum, sumsEqual} from '../model/sum';
 import seedrandom, {PRNG} from 'seedrandom';
 import {Config, Entry} from '../model/config';
 import {evaluate} from 'mathjs';
+import {ActivatedRoute} from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,13 +12,26 @@ import {evaluate} from 'mathjs';
 export class GenerateSumService {
 
   sums = computed<Sum[][]>(() => this.generateSums());
+  seed = signal<string | undefined>(undefined);
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(private readonly configService: ConfigService, private readonly activatedRoute: ActivatedRoute) {
+    effect(() => this.generateSums());
+  }
+
+  createSeed(): string {
+    const timestamp = Date.now().toString();
+    const randomValue = Math.random().toString();
+    return `${timestamp}-${randomValue}`;
   }
 
   private generateSums() {
-    const random = seedrandom();
-    const config = this.configService.sumGenerationConfig();
+    const seed = this.seed();
+    const config = this.configService.config();
+    if (!seed || !config) {
+      return [];
+    }
+
+    const random = seedrandom(seed);
     let sums = this.createSums(config, random);
     if (config.doubleSided) {
       sums = sums.concat(this.createSums(config, random));
@@ -78,4 +92,5 @@ export class GenerateSumService {
     }
     return Math.round(random() * (end - start)) + start;
   }
+
 }
