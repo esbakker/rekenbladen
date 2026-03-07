@@ -48,7 +48,8 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "/rekenbladen"
+              "baseHref": "/rekenbladen/",
+              "deployUrl": "/rekenbladen/"
             },
             "development": {
               "optimization": false,
