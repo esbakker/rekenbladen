@@ -26,34 +26,40 @@ export class GenerateSumService {
   }
 
   private createSums(config: Config, random: PRNG) {
-    return config.entries.flatMap(entry => {
-      if (entry.start >= entry.end) {
-        return [];
-      }
+    return config.entries.flatMap(entry =>
+      Array.from({length: entry.nrOfGroups}).map(() => {
+          if (entry.start >= entry.end) {
+            return [];
+          }
 
-      return Array.from({length: entry.nrOfGroups}).map(() =>
-        Array.from({length: config.itemsPerGroup}).reduce((pv: Sum[]) => {
-          const sum = this.createUniqueSum(random, entry, pv);
+          return Array.from({length: config.itemsPerGroup}).reduce((pv: Sum[]) => {
+            const sum = this.createUniqueSum(random, entry, pv);
 
-          return [...pv, sum];
-        }, [] as Sum[])
-      )
-    });
+            return [...pv, sum];
+          }, [] as Sum[]);
+        }
+      ));
   }
 
   private createUniqueSum(random: PRNG, entry: Entry, sums: Sum[]) {
     let sum: Sum;
+    let attempts = 0;
 
     do {
+      attempts += 1;
       sum = this.createSum(random, entry);
-    } while (sums.some(s => sumsEqual(sum, s)) || sum.answer > entry.end || sum.answer < entry.start)
+    } while (attempts < 100 && (sums.some(s => sumsEqual(sum, s)) || this.sumInvalid(sum, entry)))
 
     return sum;
   }
 
+  private sumInvalid(sum: Sum, entry: Entry) {
+    return sum.answer > entry.end || sum.answer < entry.start || !sum.first && !sum.second;
+  }
+
   private createSum(random: PRNG, entry: Entry) {
     const first = this.generateNumber(random, entry);
-    let second = this.generateNumber(random, entry);
+    let second = this.generateNumber(random, entry, first);
 
     return {
       first: first,
@@ -63,7 +69,11 @@ export class GenerateSumService {
     } as Sum;
   }
 
-  private generateNumber(random: PRNG, entry: Entry) {
-    return Math.round(random() * ((entry.end) - entry.start)) + entry.start;
+  private generateNumber(random: PRNG, entry: Entry, first?: number) {
+    let end = entry.end;
+    if (first !== undefined) {
+      end = entry.operator === '-' ? first : (entry.end - first);
+    }
+    return Math.round(random() * end);
   }
 }
