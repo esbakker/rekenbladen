@@ -30,6 +30,9 @@ h3 {
 }
 
 @media print {
+  :root {
+    --mat-sys-primary: black;
+  }
   app-root {
     grid-template-columns: 1fr !important;
   }
@@ -40,5 +43,6 @@ h3 {
 
   .page-break {
     border-bottom: none !important;
+    margin: 0 !important;
   }
 }

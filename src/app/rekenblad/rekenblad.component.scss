@@ -6,12 +6,13 @@
   .page-break {
     column-span: all;
     grid-column: span 4;
-    border-bottom: 1px dashed;
+    border-bottom: 1px dashed var(--mat-sys-primary);
     page-break-after: always;
+    margin: 5px 0;
   }
 
   .group {
-    border: 1px solid black;
+    border: 1px solid var(--mat-sys-primary);
     padding: 5px;
     display: flex;
     flex-direction: column;

@@ -1,6 +1,6 @@
 :host {
   background-color: white;
-  border: 1px solid black;
+  border: 1px solid var(--mat-sys-primary);
   padding: 10px;
   border-radius: 10px;
 
@@ -40,6 +40,7 @@
   }
 
   fa-icon {
+    color: var(--mat-sys-primary);
     cursor: pointer;
   }
 }
