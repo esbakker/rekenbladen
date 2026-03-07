@@ -15,8 +15,16 @@
         <span>=</span>
         @if (state.showAnswers) {
           <strong class="answer">{{ sum.answer }}</strong>
+        } @else if (state.fillingOut) {
+          <input class="answer" type="number" [readonly]="state.timeExpired" [(ngModel)]="sum.givenAnswer"/>
+          @if (state.timeExpired) {
+            @let isCorrect = sum.givenAnswer === sum.answer;
+            @let missing = sum.givenAnswer === undefined;
+            <fa-icon [icon]="missing ? faBan : isCorrect ? faCheck : faTimes" [class.missing]="missing" [class.success]="isCorrect"
+                     [class.failure]="!isCorrect"></fa-icon>
+          }
         } @else {
-          <span>....</span>
+          <span class="answer">....</span>
         }
       </div>
     }

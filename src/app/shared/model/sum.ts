@@ -5,6 +5,7 @@ export interface Sum {
   second: number;
   operator: SumOperator;
   answer: number;
+  givenAnswer?: number;
 }
 
 export const sumsEqual = (sum1: Sum, sum2: Sum) => {

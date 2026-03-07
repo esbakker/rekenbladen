@@ -19,9 +19,46 @@
     border-radius: 10px;
 
     .sum {
-      display: flex;
-      gap: 10px;
+      display: grid;
       padding: 7px 0;
+      grid-template-columns: repeat(4, 1fr) 4fr 2fr;
+      justify-items: center;
+
+      .answer {
+        justify-self: start;
+
+        &:is(input) {
+          background: white;
+          border: 1px solid var(--mat-sys-primary);
+          border-radius: 2px;
+
+          &::-webkit-inner-spin-button,
+          &::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+
+          &[readonly] {
+            background: var(--mat-sys-surface-dim);
+          }
+        }
+      }
+
+      .success {
+        color: green;
+      }
+
+      .failure {
+        color: red;
+      }
+
+      .missing {
+        color: gray;
+      }
+
+      input {
+        width: 50px;
+      }
     }
   }
 }

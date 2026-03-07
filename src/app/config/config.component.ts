@@ -16,6 +16,7 @@ import {MatCheckbox} from '@angular/material/checkbox';
 import {GenerateSumService} from '../shared/services/generate-sum.service';
 import {Router} from '@angular/router';
 import {filter, first, skip} from 'rxjs';
+import {TimePipe} from '../shared/pipes/time-pipe';
 
 @Component({
   selector: 'app-config',
@@ -29,7 +30,8 @@ import {filter, first, skip} from 'rxjs';
     EntrySummaryPipe,
     FaIconComponent,
     MatButton,
-    MatCheckbox
+    MatCheckbox,
+    TimePipe
   ],
   templateUrl: './config.component.html',
   styleUrl: './config.component.scss',
@@ -43,7 +45,7 @@ export class ConfigComponent {
   protected readonly faArrowsRotate = faArrowsRotate;
   protected readonly faCopy = faCopy;
 
-  constructor(private fb: FormBuilder, private readonly configService: ConfigService, private readonly uiStateService: UiStateService,
+  constructor(private fb: FormBuilder, private readonly configService: ConfigService, protected readonly uiStateService: UiStateService,
               private readonly generateSumService: GenerateSumService, private readonly router: Router, private readonly destroyRef: DestroyRef) {
     toObservable(this.configService.config).pipe(skip(1), filter(config => !!config), first()).subscribe(initialConfig => {
       this.configForm = this.fb.group({
@@ -53,10 +55,11 @@ export class ConfigComponent {
       });
       const initialState = this.uiStateService.state();
       this.stateForm = this.fb.group({
-        showAnswers: [initialState.showAnswers]
+        showAnswers: [initialState.showAnswers],
+        fillOutMinutes: [5]
       });
       this.configForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(config => this.configService.update(config));
-      this.stateForm.valueChanges.pipe(takeUntilDestroyed()).subscribe(config => this.uiStateService.update(config));
+      this.stateForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(config => this.uiStateService.update(config));
     });
   }
 
@@ -89,6 +92,14 @@ export class ConfigComponent {
 
   copyUrl() {
     window.navigator.clipboard.writeText(window.location.href);
+  }
+
+  startFillingOut() {
+    this.uiStateService.startFillingOut();
+  }
+
+  stopFillingOut() {
+    this.uiStateService.stopFillingOut();
   }
 
   private createEntryGroup(entry: Entry): FormGroup {

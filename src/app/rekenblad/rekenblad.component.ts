@@ -4,10 +4,18 @@ import {ConfigService} from '../shared/services/config.service';
 import {UiStateService} from '../shared/services/ui-state.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {FormsModule} from '@angular/forms';
+import {faBan, faCheck, faTimes} from '@fortawesome/free-solid-svg-icons';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-rekenblad',
-  imports: [],
+  imports: [
+    FormsModule,
+    FaIconComponent,
+    NgClass
+  ],
   templateUrl: './rekenblad.component.html',
   styleUrl: './rekenblad.component.scss',
 })
@@ -24,4 +32,8 @@ export class RekenbladComponent {
       this.generateSumService.seed.set(seed);
     })
   }
+
+  protected readonly faTimes = faTimes;
+  protected readonly faCheck = faCheck;
+  protected readonly faBan = faBan;
 }
