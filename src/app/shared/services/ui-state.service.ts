@@ -6,7 +6,7 @@ import {GenerateSumService} from './generate-sum.service';
   providedIn: 'root',
 })
 export class UiStateService {
-  state = signal<UiState>({showAnswers: false, fillingOut: false, fillOutMinutes: 5});
+  state = signal<UiState>({showAnswers: false, showHeader: false, fillingOut: false, fillOutMinutes: 5});
   remainingTime = signal<number | undefined>(undefined);
   private timeoutId?: number;
 

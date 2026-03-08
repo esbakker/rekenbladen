@@ -3,6 +3,19 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 
+  .header {
+    font-weight: bold;
+    grid-column: span 4;
+    display: grid;
+    grid-template-columns: repeat(3, auto 3fr);
+    gap: 10px;
+    margin-bottom: 10px;
+
+    span.input-placeholder {
+      border-bottom: 1px dashed blue;
+    }
+  }
+
   .page-break {
     column-span: all;
     grid-column: span 4;

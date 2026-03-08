@@ -7,12 +7,14 @@ import {FormsModule} from '@angular/forms';
 import {faBan, faCheck, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {getConfigQueryParam} from '../shared/url.util';
+import {NgTemplateOutlet} from '@angular/common';
 
 @Component({
   selector: 'app-rekenblad',
   imports: [
     FormsModule,
-    FaIconComponent
+    FaIconComponent,
+    NgTemplateOutlet
   ],
   templateUrl: './rekenblad.component.html',
   styleUrl: './rekenblad.component.scss',

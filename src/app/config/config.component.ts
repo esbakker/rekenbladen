@@ -63,7 +63,8 @@ export class ConfigComponent {
       const initialState = this.uiStateService.state();
       const stateForm = this.fb.group({
         showAnswers: [initialState.showAnswers],
-        fillOutMinutes: [5]
+        showHeader: [initialState.showHeader],
+        fillOutMinutes: [initialState.fillOutMinutes]
       });
       this.stateForm.set(stateForm);
       configForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))

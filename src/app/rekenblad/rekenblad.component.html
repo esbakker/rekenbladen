@@ -2,9 +2,11 @@
 @let config = configService.config();
 @let state = uiStateService.state();
 
+<ng-container *ngTemplateOutlet="header"></ng-container>
 @for (group of sumGroups; track $index; let count = $count) {
   @if (config?.doubleSided && (count / 2) === $index) {
     <div class="page-break"></div>
+    <ng-container *ngTemplateOutlet="header"></ng-container>
   }
   <div class="group">
     @for (sum of group; track $index) {
@@ -30,3 +32,16 @@
     }
   </div>
 }
+
+<ng-template #header>
+  @if (state.showHeader) {
+    <div class="header">
+      <span>Naam:</span>
+      <span class="input-placeholder"></span>
+      <span>Datum:</span>
+      <span class="input-placeholder"></span>
+      <span>Groep:</span>
+      <span class="input-placeholder"></span>
+    </div>
+  }
+</ng-template>
