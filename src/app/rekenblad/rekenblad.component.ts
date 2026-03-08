@@ -8,6 +8,7 @@ import {faBan, faCheck, faTimes} from '@fortawesome/free-solid-svg-icons';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {getConfigQueryParam} from '../shared/url.util';
 import {NgTemplateOutlet} from '@angular/common';
+import {Sum} from '../shared/model/sum';
 
 @Component({
   selector: 'app-rekenblad',
@@ -46,5 +47,9 @@ export class RekenbladComponent implements OnInit {
       this.generateSumService.seed.set(seed);
       this.configService.init(configQueryParam);
     });
+  }
+
+  onAnswerChange(answer: number, sum: Sum) {
+    this.generateSumService.answeredSums.update(sums => [...sums.filter(s => s.id !== sum.id), {...sum, givenAnswer: answer}]);
   }
 }

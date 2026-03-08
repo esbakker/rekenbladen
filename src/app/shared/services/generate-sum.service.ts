@@ -6,6 +6,9 @@ import {Config, Entry} from '../model/config';
 import {evaluate} from 'mathjs';
 import {ActivatedRoute} from '@angular/router';
 
+
+let nextId = 0;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -13,6 +16,7 @@ export class GenerateSumService {
 
   sums = computed<Sum[][]>(() => this.generateSums());
   seed = signal<string | undefined>(undefined);
+  answeredSums = signal<Sum[]>([]);
 
   constructor(private readonly configService: ConfigService, private readonly activatedRoute: ActivatedRoute) {
     effect(() => this.generateSums());
@@ -25,6 +29,7 @@ export class GenerateSumService {
   }
 
   private generateSums() {
+    nextId = 0;
     const seed = this.seed();
     const config = this.configService.config();
     if (!seed || !config) {
@@ -71,16 +76,18 @@ export class GenerateSumService {
     return sum.answer > entry.end || sum.answer < entry.start || !sum.first || !sum.second;
   }
 
-  private createSum(random: PRNG, entry: Entry) {
+  private createSum(random: PRNG, entry: Entry): Sum {
+    nextId += 1;
     const first = this.generateNumber(random, entry);
     let second = this.generateNumber(random, entry, first);
 
     return {
+      id: nextId,
       first: first,
       second: second,
       operator: entry.operator,
       answer: evaluate(`${first} ${entry.operator} ${second}`)
-    } as Sum;
+    };
   }
 
   private generateNumber(random: PRNG, entry: Entry, first?: number) {

@@ -1,6 +1,7 @@
-@let isFillingOut = uiStateService.state().fillingOut;
+@let uiState = uiStateService.state();
+@let isFillingOut = uiState.fillingOut;
 @let timeRemaining = uiStateService.remainingTime();
-@let finishedFillingOut = uiStateService.state().timeExpired;
+@let finishedFillingOut = uiState.timeExpired;
 @let sForm = stateForm();
 @let cForm = configForm();
 
@@ -20,8 +21,18 @@
         Kopieer url voor deze sommen
       </button>
     } @else {
+      @let finishedCounts = uiState.finishedCounts;
       @if (!finishedFillingOut) {
         <h3>Tijd: {{ timeRemaining | time }}</h3>
+      } @else if (finishedCounts) {
+        <div class="success">
+          <span>Goed:</span>
+          <span>{{ finishedCounts.correct }}</span>
+        </div>
+        <div class="failure">
+          <span>Fout:</span>
+          <span>{{ finishedCounts.incorrect }}</span>
+        </div>
       }
       <button matButton="filled" (click)="stopFillingOut()">Klaar</button>
     }

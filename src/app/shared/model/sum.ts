@@ -1,6 +1,7 @@
 export type SumOperator = '+' | '-';
 
 export interface Sum {
+  id: number;
   first: number;
   second: number;
   operator: SumOperator;

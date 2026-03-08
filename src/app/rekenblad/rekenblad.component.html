@@ -18,7 +18,8 @@
         @if (state.showAnswers) {
           <strong class="answer">{{ sum.answer }}</strong>
         } @else if (state.fillingOut) {
-          <input class="answer" type="number" [readonly]="state.timeExpired" [(ngModel)]="sum.givenAnswer"/>
+          <input class="answer" type="number" [readonly]="state.timeExpired" [(ngModel)]="sum.givenAnswer"
+                 (ngModelChange)="onAnswerChange($event, sum)"/>
           @if (state.timeExpired) {
             @let isCorrect = sum.givenAnswer === sum.answer;
             @let missing = sum.givenAnswer === undefined;

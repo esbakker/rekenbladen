@@ -8,6 +8,21 @@
     h3 {
       margin-bottom: 20px;
     }
+
+    .success,
+    .failure {
+      height: 3rem;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      color: green;
+    }
+
+    .failure {
+      color: red;
+      margin-bottom: 20px;
+    }
   }
 
   > form {

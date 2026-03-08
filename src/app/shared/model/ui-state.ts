@@ -4,4 +4,9 @@ export interface UiState {
   fillingOut: boolean;
   fillOutMinutes?: number;
   timeExpired?: boolean;
+  finishedCounts?: {
+    correct: number;
+    incorrect: number;
+    skipped: number;
+  }
 }
