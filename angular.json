@@ -64,8 +64,8 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "/rekenbladen/",
-              "deployUrl": "/rekenbladen/"
+              "baseHref": "/tempotoets-generator/",
+              "deployUrl": "/tempotoets-generator/"
             },
             "development": {
               "optimization": false,
