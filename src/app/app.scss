@@ -1,5 +1,4 @@
 :host {
-  --mat-sidenav-container-width: 600px;
   --mat-sidenav-container-background-color: white;
 
   .mobile {
@@ -8,7 +7,7 @@
 
   ::ng-deep {
     .mat-drawer.mat-drawer-opened.mat-drawer-opened {
-      max-width: 100%;
+      width: clamp(400px, 35%, 600px);
       transform: none;
       padding: 10px;
     }
