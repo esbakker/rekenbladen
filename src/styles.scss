@@ -21,7 +21,7 @@ body {
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
 
-  margin: 0;
+  margin: -20px 0;
   height: 100%;
 }
 
@@ -33,8 +33,21 @@ h3 {
   :root {
     --mat-sys-primary: black;
   }
+
+  body {
+    margin: 0;
+  }
+
   app-root {
-    grid-template-columns: 1fr !important;
+    mat-toolbar,
+    mat-sidenav,
+    .mat-drawer-backdrop mat-drawer-shown {
+      display: none !important;
+    }
+
+    mat-sidenav-content {
+      margin: 0 !important;
+    }
   }
 
   app-config {

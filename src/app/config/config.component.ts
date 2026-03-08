@@ -94,7 +94,7 @@ export class ConfigComponent {
   }
 
   print() {
-    window.print();
+      print();
   }
 
   regenerate() {

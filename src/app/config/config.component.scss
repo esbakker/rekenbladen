@@ -1,8 +1,5 @@
 :host {
-  background-color: white;
-  border: 1px solid var(--mat-sys-primary);
-  padding: 10px;
-  border-radius: 10px;
+  padding: 0 10px;
 
   .actions {
     font-size: 2rem;
@@ -33,6 +30,7 @@
     display: flex;
     gap: 10px;
     padding-left: 10px;
+    flex-wrap: wrap;
 
     mat-form-field {
       max-width: 130px;

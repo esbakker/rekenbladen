@@ -1,2 +1,15 @@
-<router-outlet></router-outlet>
-<app-config></app-config>
+<mat-toolbar class="example-toolbar">
+  <button matIconButton (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+  <h1>Tempotoets Generator</h1>
+</mat-toolbar>
+
+<mat-sidenav-container [class.mobile]="isMobile()">
+  <mat-sidenav #snav [mode]="isMobile() ? 'over' : 'side'"
+               [fixedInViewport]="isMobile()" fixedTopGap="56" [opened]="!isMobile()">
+    <app-config></app-config>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

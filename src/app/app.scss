@@ -1,7 +1,18 @@
 :host {
-  display: grid;
-  grid-template-columns: 0 3fr 1fr;
-  gap: 20px;
+  --mat-sidenav-container-width: 600px;
+  --mat-sidenav-container-background-color: white;
+
+  .mobile {
+    --mat-sidenav-container-shape: 0;
+  }
+
+  ::ng-deep {
+    .mat-drawer.mat-drawer-opened.mat-drawer-opened {
+      max-width: 100%;
+      transform: none;
+      padding: 10px;
+    }
+  }
 }
 
 @media screen {
